@@ -19,19 +19,35 @@ export function ContactSection() {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setError(null)
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    try {
+      const response = await fetch('/api/telegram', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
 
-    setIsSubmitting(false)
-    setSubmitted(true)
-    setFormData({ name: "", business: "", website: "", contact: "", comment: "" })
+      if (!response.ok) {
+        throw new Error('Ошибка при отправке формы')
+      }
 
-    setTimeout(() => setSubmitted(false), 5000)
+      setSubmitted(true)
+      setFormData({ name: "", business: "", website: "", contact: "", comment: "" })
+      setTimeout(() => setSubmitted(false), 5000)
+    } catch (err) {
+      setError('Произошла ошибка. Попробуйте еще раз или свяжитесь с нами напрямую.')
+      console.error('Form submission error:', err)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -152,6 +168,12 @@ export function ContactSection() {
                     placeholder="Расскажите кратко о вашей задаче"
                   />
                 </div>
+
+                {error && (
+                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-sm text-red-600">{error}</p>
+                  </div>
+                )}
 
                 <Button
                   type="submit"
