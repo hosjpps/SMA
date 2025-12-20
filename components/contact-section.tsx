@@ -6,6 +6,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { MapPin, Phone, Mail } from "lucide-react"
+import { useInView } from "@/hooks/use-in-view"
 
 export function ContactSection() {
   const [formData, setFormData] = useState({
@@ -41,19 +42,27 @@ export function ContactSection() {
   }
 
   return (
-    <section id="contact" className="py-20 md:py-32 bg-gradient-to-b from-cream-light to-cream">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-burgundy font-bold uppercase mb-6">
+    <section id="contact" className="py-12 md:py-20 lg:py-32 bg-gradient-to-b from-cream-light to-cream">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-burgundy font-bold uppercase mb-4 md:mb-6 px-2">
             Готовы перейти от хаоса в маркетинге к системе?
           </h2>
-          <p className="font-subheading text-xl text-foreground/80">
+          <p className="font-subheading text-base sm:text-lg md:text-xl text-foreground/80 px-4">
             Тогда оставляйте контактные данные для первичной консультации!
           </p>
         </div>
 
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
-          <Card className="p-6 shadow-xl border-burgundy/20 order-2 md:order-1">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-6 md:gap-8">
+          {(() => {
+            const { ref: formRef, isInView: formInView } = useInView()
+            return (
+              <Card
+                ref={formRef}
+                className={`p-4 sm:p-5 md:p-6 shadow-xl border-burgundy/20 order-2 md:order-1 ${
+                  formInView ? "animate-in fade-in duration-1000" : "opacity-0"
+                }`}
+              >
             {submitted ? (
               <div className="text-center py-12">
                 <div className="w-20 h-20 bg-burgundy/10 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -65,9 +74,9 @@ export function ContactSection() {
                 <p className="font-body text-foreground/80">Мы свяжемся с вами в ближайшее время.</p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                 <div>
-                  <label htmlFor="name" className="block font-body text-sm font-medium text-foreground mb-2">
+                  <label htmlFor="name" className="block font-body text-xs sm:text-sm font-medium text-foreground mb-1.5 sm:mb-2">
                     Имя <span className="text-burgundy">*</span>
                   </label>
                   <input
@@ -77,13 +86,13 @@ export function ContactSection() {
                     required
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 rounded-lg border border-burgundy/20 focus:border-burgundy focus:outline-none focus:ring-2 focus:ring-burgundy/20 transition-all"
+                    className="w-full px-3 py-2 sm:py-2.5 text-sm sm:text-base rounded-lg border border-burgundy/20 focus:border-burgundy focus:outline-none focus:ring-2 focus:ring-burgundy/20 transition-all"
                     placeholder="Ваше имя"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="business" className="block font-body text-sm font-medium text-foreground mb-2">
+                  <label htmlFor="business" className="block font-body text-xs sm:text-sm font-medium text-foreground mb-1.5 sm:mb-2">
                     Бизнес / ниша <span className="text-burgundy">*</span>
                   </label>
                   <input
@@ -93,13 +102,13 @@ export function ContactSection() {
                     required
                     value={formData.business}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 rounded-lg border border-burgundy/20 focus:border-burgundy focus:outline-none focus:ring-2 focus:ring-burgundy/20 transition-all"
+                    className="w-full px-3 py-2 sm:py-2.5 text-sm sm:text-base rounded-lg border border-burgundy/20 focus:border-burgundy focus:outline-none focus:ring-2 focus:ring-burgundy/20 transition-all"
                     placeholder="Например: Fashion / Retail"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="website" className="block font-body text-sm font-medium text-foreground mb-2">
+                  <label htmlFor="website" className="block font-body text-xs sm:text-sm font-medium text-foreground mb-1.5 sm:mb-2">
                     Сайт / соцсети
                   </label>
                   <input
@@ -108,13 +117,13 @@ export function ContactSection() {
                     name="website"
                     value={formData.website}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 rounded-lg border border-burgundy/20 focus:border-burgundy focus:outline-none focus:ring-2 focus:ring-burgundy/20 transition-all"
+                    className="w-full px-3 py-2 sm:py-2.5 text-sm sm:text-base rounded-lg border border-burgundy/20 focus:border-burgundy focus:outline-none focus:ring-2 focus:ring-burgundy/20 transition-all"
                     placeholder="Ссылка на ваш сайт или соцсети"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="contact" className="block font-body text-sm font-medium text-foreground mb-2">
+                  <label htmlFor="contact" className="block font-body text-xs sm:text-sm font-medium text-foreground mb-1.5 sm:mb-2">
                     Ваш Телеграм / WhatsApp <span className="text-burgundy">*</span>
                   </label>
                   <input
@@ -124,13 +133,13 @@ export function ContactSection() {
                     required
                     value={formData.contact}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 rounded-lg border border-burgundy/20 focus:border-burgundy focus:outline-none focus:ring-2 focus:ring-burgundy/20 transition-all"
+                    className="w-full px-3 py-2 sm:py-2.5 text-sm sm:text-base rounded-lg border border-burgundy/20 focus:border-burgundy focus:outline-none focus:ring-2 focus:ring-burgundy/20 transition-all"
                     placeholder="@username или +7..."
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="comment" className="block font-body text-sm font-medium text-foreground mb-2">
+                  <label htmlFor="comment" className="block font-body text-xs sm:text-sm font-medium text-foreground mb-1.5 sm:mb-2">
                     Комментарий
                   </label>
                   <textarea
@@ -139,7 +148,7 @@ export function ContactSection() {
                     rows={3}
                     value={formData.comment}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 rounded-lg border border-burgundy/20 focus:border-burgundy focus:outline-none focus:ring-2 focus:ring-burgundy/20 transition-all resize-none"
+                    className="w-full px-3 py-2 sm:py-2.5 text-sm sm:text-base rounded-lg border border-burgundy/20 focus:border-burgundy focus:outline-none focus:ring-2 focus:ring-burgundy/20 transition-all resize-none"
                     placeholder="Расскажите кратко о вашей задаче"
                   />
                 </div>
@@ -147,67 +156,82 @@ export function ContactSection() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-burgundy hover:bg-burgundy-dark text-cream text-lg py-4 h-auto"
+                  className="w-full bg-burgundy hover:bg-burgundy-dark text-cream text-sm sm:text-base md:text-lg py-3 sm:py-4 h-auto transition-all duration-300 hover:scale-105 hover:shadow-lg"
                 >
                   {isSubmitting ? "Отправка..." : "Отправить заявку"}
                 </Button>
 
-                <p className="text-center text-sm text-muted-foreground whitespace-nowrap">
+                <p className="text-center text-xs sm:text-sm text-muted-foreground break-words px-2">
                   Нажимая кнопку, вы соглашаетесь с <button type="button" className="text-burgundy hover:underline">политикой конфиденциальности</button>
                 </p>
               </form>
             )}
           </Card>
+            )
+          })()}
 
           <div className="space-y-6 order-1 md:order-2">
-            <Card className="p-8 bg-burgundy text-cream border-burgundy shadow-xl">
-              <h3 className="font-subheading text-2xl font-semibold mb-4">Что вы получите?</h3>
-              <ul className="space-y-4 font-body">
-                <li className="flex gap-3">
-                  <span className="text-2xl">✓</span>
-                  <span>Бесплатную консультацию 45 минут</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-2xl">✓</span>
-                  <span>Предварительную стратегию по маркетингу</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-2xl">✓</span>
-                  <span>Анализ текущей ситуации в вашем бизнесе</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-2xl">✓</span>
-                  <span>Конкретные рекомендации и точки роста</span>
-                </li>
-              </ul>
-            </Card>
+            {(() => {
+              const { ref: benefitsRef, isInView: benefitsInView } = useInView()
+              const { ref: contactRef, isInView: contactInView } = useInView()
+              return (
+                <>
+                  <Card
+                    ref={benefitsRef}
+                    className={`p-5 sm:p-8 bg-burgundy text-cream border-burgundy shadow-xl transition-all duration-300 hover:scale-105 ${
+                      benefitsInView ? "animate-in fade-in duration-1000" : "opacity-0"
+                    }`}
+                  >
+                    <h3 className="font-subheading text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Что вы получите?</h3>
+                    <ul className="space-y-3 sm:space-y-4 font-body">
+                      {[
+                        "Бесплатную консультацию 45 минут",
+                        "Предварительную стратегию по маркетингу",
+                        "Анализ текущей ситуации в вашем бизнесе",
+                        "Конкретные рекомендации и точки роста"
+                      ].map((item, index) => (
+                        <li key={index} className="flex gap-2 sm:gap-3">
+                          <span className="text-xl sm:text-2xl transition-transform duration-300 hover:scale-125 flex-shrink-0">✓</span>
+                          <span className="text-sm sm:text-base">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </Card>
 
-            <Card className="p-8 border-burgundy/20">
-              <h3 className="font-subheading text-xl font-semibold text-burgundy mb-6">Контактная информация</h3>
-              <div className="space-y-4 font-body text-foreground/80">
-                <div className="flex gap-3 items-start">
-                  <Mail className="w-5 h-5 text-burgundy flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-semibold text-foreground">Email</p>
-                    <p className="text-sm">info@surikov-marketing.ru</p>
-                  </div>
-                </div>
-                <div className="flex gap-3 items-start">
-                  <Phone className="w-5 h-5 text-burgundy flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-semibold text-foreground">Telegram / WhatsApp</p>
-                    <p className="text-sm">Указывайте в форме заявки</p>
-                  </div>
-                </div>
-                <div className="flex gap-3 items-start">
-                  <MapPin className="w-5 h-5 text-burgundy flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-semibold text-foreground">География</p>
-                    <p className="text-sm">Работаем онлайн по всей России и СНГ</p>
-                  </div>
-                </div>
-              </div>
-            </Card>
+                  <Card
+                    ref={contactRef}
+                    className={`p-5 sm:p-8 border-burgundy/20 transition-all duration-300 hover:scale-105 hover:shadow-lg ${
+                      contactInView ? "animate-in fade-in duration-1000" : "opacity-0"
+                    }`}
+                  >
+                    <h3 className="font-subheading text-lg sm:text-xl font-semibold text-burgundy mb-4 sm:mb-6">Контактная информация</h3>
+                    <div className="space-y-3 sm:space-y-4 font-body text-foreground/80">
+                      <div className="flex gap-2 sm:gap-3 items-start">
+                        <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-burgundy flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="font-semibold text-foreground text-sm sm:text-base">Email</p>
+                          <p className="text-xs sm:text-sm break-all">surikovmm@icloud.com</p>
+                        </div>
+                      </div>
+                      <div className="flex gap-2 sm:gap-3 items-start">
+                        <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-burgundy flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="font-semibold text-foreground text-sm sm:text-base">Telegram / WhatsApp</p>
+                          <p className="text-xs sm:text-sm break-all">@surikovm / 89162202304</p>
+                        </div>
+                      </div>
+                      <div className="flex gap-2 sm:gap-3 items-start">
+                        <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-burgundy flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="font-semibold text-foreground text-sm sm:text-base">География</p>
+                          <p className="text-xs sm:text-sm">Работаем онлайн по всей России и СНГ</p>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                </>
+              )
+            })()}
           </div>
         </div>
       </div>

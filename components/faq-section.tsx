@@ -59,40 +59,58 @@ export function FaqSection() {
     },
   ]
 
+  const handleCardClick = (clickedIndex: number) => {
+    setOpenIndex((currentOpenIndex) => {
+      // Если кликнули на уже открытый - закрываем
+      if (currentOpenIndex === clickedIndex) {
+        return null
+      }
+      // Иначе открываем только тот, на который кликнули
+      return clickedIndex
+    })
+  }
+
   return (
-    <section id="faq" className="py-20 md:py-32 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-burgundy font-bold uppercase mb-6">
+    <section id="faq" className="py-12 md:py-20 lg:py-32 bg-white">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="text-center mb-10 md:mb-16">
+          <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-burgundy font-bold uppercase mb-4 md:mb-6 px-2">
             Часто задаваемые вопросы
           </h2>
         </div>
 
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-3">
-          {faqs.map((faq, index) => (
-            <Card 
-                key={index} 
-                className="border-burgundy/20 overflow-hidden hover:bg-cream/30 transition-colors cursor-pointer"
-                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-3 sm:gap-4 items-start">
+          {faqs.map((faq, index) => {
+            const isOpen = openIndex !== null && openIndex === index
+            
+            return (
+              <Card 
+                key={`faq-${index}`}
+                className={`border-burgundy/20 overflow-hidden hover:bg-cream/30 transition-colors cursor-pointer ${!isOpen ? 'h-[72px] sm:h-[80px]' : ''}`}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleCardClick(index)
+                }}
               >
-              <div className="w-full py-3 px-4 flex justify-between items-center gap-2 text-left">
-                <h3 className="font-subheading text-lg font-semibold text-foreground">{faq.question}</h3>
-                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-burgundy/10 flex items-center justify-center">
-                  {openIndex === index ? (
-                    <Minus className="w-3 h-3 text-burgundy" />
-                  ) : (
-                    <Plus className="w-3 h-3 text-burgundy" />
-                  )}
+                <div className="w-full h-full py-2 sm:py-3 px-3 sm:px-4 flex justify-between items-center gap-2 text-left">
+                  <h3 className="font-subheading text-base sm:text-lg font-semibold text-foreground line-clamp-2 leading-snug">{faq.question}</h3>
+                  <div className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-burgundy/10 flex items-center justify-center">
+                    {isOpen ? (
+                      <Minus className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-burgundy" />
+                    ) : (
+                      <Plus className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-burgundy" />
+                    )}
+                  </div>
                 </div>
-              </div>
 
-              {openIndex === index && (
-                <div className="px-4 pb-3 animate-in slide-in-from-top-2 duration-300">
-                  <p className="font-body text-sm text-foreground/80 leading-relaxed">{faq.answer}</p>
-                </div>
-              )}
-            </Card>
-          ))}
+                {isOpen && (
+                  <div className="px-3 sm:px-4 pb-3 animate-in fade-in duration-500">
+                    <p className="font-body text-xs sm:text-sm text-foreground/80 leading-relaxed">{faq.answer}</p>
+                  </div>
+                )}
+              </Card>
+            )
+          })}
         </div>
       </div>
     </section>

@@ -21,16 +21,16 @@ export function PainPointsSection() {
   ]
 
   return (
-    <section id="pain-points" className="py-20 md:py-32 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-burgundy font-bold uppercase mb-6">
+    <section id="pain-points" className="py-12 md:py-20 lg:py-32 bg-white">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="text-center mb-10 md:mb-16">
+          <h2 className="font-heading text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-burgundy font-bold uppercase mb-4 md:mb-6 px-2 break-words leading-tight">
             С чем обычно сталкиваются предприниматели
           </h2>
-          <p className="font-subheading text-xl text-foreground/80 max-w-3xl mx-auto">
+          <p className="font-subheading text-base sm:text-lg md:text-xl text-burgundy max-w-3xl mx-auto px-4">
             при неудачном выборе агентства или маркетолога
           </p>
-          <p className="font-body text-lg text-muted-foreground mt-4">
+          <p className="font-body text-sm sm:text-base md:text-lg text-muted-foreground mt-3 md:mt-4 px-4">
             Почти в каждом бизнесе, куда я прихожу, вижу одни и те же ошибки.
           </p>
         </div>
