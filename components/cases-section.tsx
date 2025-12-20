@@ -131,7 +131,8 @@ export function CasesSection() {
                   <img
                     src={caseItem.image}
                     alt={caseItem.title}
-                    className="w-full h-full object-cover object-top"
+                    className="w-full h-full object-cover"
+                    style={{ objectPosition: 'center 13%' }}
                   />
                   <div className={`absolute inset-0 bg-gradient-to-r from-white from-0% via-white/90 via-45% to-transparent to-75% transition-opacity duration-300 ${openCase === index ? 'opacity-80' : 'opacity-90'}`} />
                 </div>

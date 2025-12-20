@@ -170,7 +170,7 @@ export function ContactSection() {
             )
           })()}
 
-          <div className="space-y-6 order-1 md:order-2">
+          <div className="space-y-8 sm:space-y-10 order-1 md:order-2">
             {(() => {
               const { ref: benefitsRef, isInView: benefitsInView } = useInView()
               const { ref: contactRef, isInView: contactInView } = useInView()
@@ -200,7 +200,7 @@ export function ContactSection() {
 
                   <Card
                     ref={contactRef}
-                    className={`p-5 sm:p-8 border-burgundy/20 transition-all duration-300 hover:scale-105 hover:shadow-lg ${
+                    className={`px-5 py-[calc(1.25rem+5px)] sm:px-8 sm:py-[calc(2rem+5px)] border-burgundy/20 transition-all duration-300 hover:scale-105 hover:shadow-lg ${
                       contactInView ? "animate-in fade-in duration-1000" : "opacity-0"
                     }`}
                   >
