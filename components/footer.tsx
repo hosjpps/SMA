@@ -32,9 +32,17 @@ export function Footer() {
 
           <div className="text-center md:text-right">
             <p className="font-body text-sm text-cream/80">© 2025 Все права защищены</p>
-            <button className="font-body text-sm text-cream/80 hover:text-cream transition-colors mt-2">
-              Политика конфиденциальности
-            </button>
+            <div className="flex flex-col gap-1 mt-2">
+              <Link href="/privacy-policy" className="font-body text-sm text-cream/80 hover:text-cream transition-colors">
+                Политика конфиденциальности
+              </Link>
+              <Link href="/personal-data-policy" className="font-body text-sm text-cream/80 hover:text-cream transition-colors">
+                Политика обработки персональных данных
+              </Link>
+              <Link href="/cookie-policy" className="font-body text-sm text-cream/80 hover:text-cream transition-colors">
+                Политика использования cookie
+              </Link>
+            </div>
           </div>
         </div>
       </div>

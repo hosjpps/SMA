@@ -6,6 +6,12 @@ import { Button } from "@/components/ui/button"
 import { useInView } from "@/hooks/use-in-view"
 
 export function ServicesSection() {
+  const scrollToContact = () => {
+    const element = document.getElementById("contact")
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" })
+    }
+  }
   const packages = [
     {
       name: "Минимум",
@@ -110,7 +116,7 @@ export function ServicesSection() {
                       </li>
                     ))}
                   </ul>
-                  <Button className="w-full bg-burgundy hover:bg-burgundy-dark text-cream mt-auto transition-all duration-300 hover:scale-105 text-sm sm:text-base py-5 sm:py-6">Оставить заявку</Button>
+                  <Button onClick={scrollToContact} className="w-full bg-burgundy hover:bg-burgundy-dark text-cream mt-auto transition-all duration-300 hover:scale-105 text-sm sm:text-base py-5 sm:py-6">Оставить заявку</Button>
                 </Card>
                 )
               })}

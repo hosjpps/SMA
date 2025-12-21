@@ -32,8 +32,21 @@ export async function POST(request: NextRequest) {
     })
 
     if (!response.ok) {
-      const errorData = await response.json()
+      let errorData
+      try {
+        errorData = await response.json()
+      } catch {
+        errorData = { description: 'Unknown error' }
+      }
       console.error('Telegram API error:', errorData)
+      return NextResponse.json(
+        { error: errorData.description || 'Failed to send message to Telegram' },
+        { status: response.status }
+      )
+    }
+
+    const result = await response.json()
+    if (!result.ok) {
       return NextResponse.json(
         { error: 'Failed to send message to Telegram' },
         { status: 500 }
@@ -49,4 +62,5 @@ export async function POST(request: NextRequest) {
     )
   }
 }
+
 

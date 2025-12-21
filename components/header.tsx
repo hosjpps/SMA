@@ -1,12 +1,16 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { usePathname, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const pathname = usePathname()
+  const router = useRouter()
+  const isHomePage = pathname === "/"
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,9 +21,24 @@ export function Header() {
   }, [])
 
   const scrollToSection = (id: string) => {
+    if (!isHomePage) {
+      // Если не на главной странице, переходим на главную с якорем
+      router.push(`/#${id}`)
+      setIsMobileMenuOpen(false)
+      return
+    }
+
     const element = document.getElementById(id)
     if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" })
+      // Учитываем высоту header при скролле
+      const headerHeight = 80
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+      const offsetPosition = elementPosition - headerHeight
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      })
       setIsMobileMenuOpen(false)
     }
   }

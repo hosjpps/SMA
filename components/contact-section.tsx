@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { MapPin, Phone, Mail } from "lucide-react"
 import { useInView } from "@/hooks/use-in-view"
+import Link from "next/link"
 
 export function ContactSection() {
   const [formData, setFormData] = useState({
@@ -35,8 +36,10 @@ export function ContactSection() {
         body: JSON.stringify(formData),
       })
 
+      const data = await response.json()
+      
       if (!response.ok) {
-        throw new Error('Ошибка при отправке формы')
+        throw new Error(data.error || 'Ошибка при отправке формы')
       }
 
       setSubmitted(true)
@@ -51,10 +54,45 @@ export function ContactSection() {
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }))
+    const { name, value } = e.target
+    
+    // Ограничение для поля телефона (11 цифр для российского формата)
+    if (name === 'contact') {
+      let cleanedValue = value
+      
+      // Если начинается с @, разрешаем буквы, цифры, подчеркивания и @ (username формат)
+      if (value.startsWith('@')) {
+        cleanedValue = value.replace(/[^a-zA-Z0-9_@]/g, '')
+      }
+      // Если это номер телефона
+      else {
+        // Удаляем все нецифровые символы кроме +
+        cleanedValue = value.replace(/[^\d+]/g, '')
+        
+        // Если начинается с +7, ограничиваем до 12 символов (+7XXXXXXXXXX)
+        if (cleanedValue.startsWith('+7')) {
+          cleanedValue = cleanedValue.slice(0, 12)
+        } 
+        // Если начинается с 7 или 8, заменяем на +7 и ограничиваем
+        else if (cleanedValue.startsWith('7') || cleanedValue.startsWith('8')) {
+          cleanedValue = '+7' + cleanedValue.slice(1, 12)
+        }
+        // Если только цифры без +, ограничиваем до 11 цифр
+        else if (/^\d+$/.test(cleanedValue)) {
+          cleanedValue = cleanedValue.slice(0, 11)
+        }
+      }
+      
+      setFormData((prev) => ({
+        ...prev,
+        [name]: cleanedValue,
+      }))
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }))
+    }
   }
 
   return (
@@ -184,7 +222,10 @@ export function ContactSection() {
                 </Button>
 
                 <p className="text-center text-xs sm:text-sm text-muted-foreground break-words px-2">
-                  Нажимая кнопку, вы соглашаетесь с <button type="button" className="text-burgundy hover:underline">политикой конфиденциальности</button>
+                  Нажимая кнопку, вы соглашаетесь с{" "}
+                  <Link href="/personal-data-policy" className="text-burgundy underline hover:text-burgundy-dark">
+                    политикой обработки персональных данных
+                  </Link>
                 </p>
               </form>
             )}
